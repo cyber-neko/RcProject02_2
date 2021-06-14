@@ -156,9 +156,12 @@ const camera =
     }]
 ;
 
+const brand_selection = document.getElementById('brand-selection');
+brand_array = [];
+createBrandSelection();
+createBatteryList();
+
 function createBrandSelection() {
-    const brand_selection = document.getElementById('brand-selection');
-    brand_array = [];
     for (let i = 0; i < camera.length; i++) {
         if (!brand_array.includes(camera[i].brand)) brand_array.push(camera[i].brand);
     }
@@ -166,19 +169,33 @@ function createBrandSelection() {
         brand_selection.innerHTML += `<option name="brand" value='${brand_array[i]}'>${brand_array[i]}</option>`;
     }
 }
-createBrandSelection();
 
 function createModelSelection() {
     const model_selection = document.getElementById('model-selection');
-    model_selection.innerHTML = '';
-    const brand = document.getElementById('brand-selection');
-    const brand_data = brand.selctedIndex;
-    console.log(brand_data);
-   for (let i = 0; i < camera.length; i++) {
-       if(camera[i].brand.includes(brand_data)) {
-           console.log(brand_data);
-           model_selection.innerHTML += `
-           <option>${camera[i].model}</option>`;
-       }
-   } 
+    model_selection.options.length = 0;
+    const selectedBrand = document.getElementById('brand-selection');
+    const value = brand_array[selectedBrand.selectedIndex - 1];
+    for (let i = 0; i < camera.length; i++) {
+        if(value == camera[i].brand) {
+            model_selection.innerHTML += `
+            <option>${camera[i].model}</option>`;
+        }
+    }
+}
+
+function createBatteryList() {
+    const battery_list = document.getElementById('battery-list');
+    for(let i = 0; i < battery.length; i++) {
+        console.log(battery[i].batteryName);
+        battery_list.innerHTML += `
+        <div class='d-flex justify-content-between bg-white w-100 p-1' style='border: solid 1px #d3d3d3;'>
+            <div>
+                <p style='font-size: 18px'>${battery[i].batteryName}</p>
+            </div>
+            <div>
+                <p style='font-size: 14px'>Estimated hours on selected setup</p>
+            </div>
+        </div>
+        `;
+    }
 }
